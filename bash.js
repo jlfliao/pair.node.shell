@@ -3,6 +3,7 @@ const fs = require('fs');
 const pwd = require('./pwd');
 const ls = require('./ls');
 const cat = require('./cat');
+const curl = require('./curl');
 
 process.stdout.write('prompt > ');
 
@@ -13,11 +14,14 @@ process.stdin.on('data', (data) => {
   const cmd = cmdArray[0];
   const path = cmdArray[1] || '';
   switch (cmd) {
+    case 'curl':
+      curl(path);
+      break;
     case 'pwd':
       process.stdout.write(pwd());
       break;
     case 'ls':
-      ls();
+      ls(done);
       break;
     case 'cat':
       cat(path);
@@ -28,3 +32,7 @@ process.stdin.on('data', (data) => {
   }
   process.stdout.write('\nprompt > ');
 });
+
+function done(output) {
+  process.stdout.write(output);
+}
